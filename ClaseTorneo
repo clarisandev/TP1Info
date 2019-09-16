@@ -1,0 +1,108 @@
+import java.util.List;
+import java.util.Iterator;
+
+public class Torneo {
+    protected List<Equipo> clubes;
+    private List<Partido> encuentros;
+    private TablaResultados resultados;
+    private Iterator<Partido> proximaFechaIterator;
+    Partido proximaFecha;    
+
+    /**
+     * Inicializa el Torneo con los equipos indicados.
+     * 
+     * @param equipos Los equipos del torneo.
+     */
+    public void InicializarTorneo (List<Equipo> equipos) {
+        Torneo torneo = new TorneoPorPuntos();
+        TablaResultados tablaResultados = new TablaResultados(clubes);
+
+    }
+
+    /**
+     * Espera una lista de equipos y la guarda.
+     * 
+     * @param equipos Los equipos a registrar.
+     */
+    public void setEquipos(List<Equipo> equipos){
+        this.clubes = equipos;
+    }
+
+    /**
+     * Espera la tabla de posiciones y la guarda.
+     * 
+     * @param tabla La tabla de posiciones.
+     */
+    public void setTablaPosiciones(TablaResultados tabla){
+        this.resultados = tabla;
+    }
+
+    /**
+     * Recibe todos los partidos a ser disputados en el torneo.
+     * Debe además setear los valores iniciales del iterador 
+     * y de la proxima fecha.
+     * 
+     * @param encuentros La lista de los partidos a disputar.
+     */
+    public void setEncuentros(List<Partido> encuentros){
+        this.encuentros = encuentros;
+    }
+
+    /**
+     * Cambia a la proxima fecha. Para ello deben cumplirse dos condiciones
+     * 1. Que el partido este finalizado, de lo contrario imprime el mensaje:
+     * 2. Que haya una proxima fecha por jugar, de lo contrario imprime el
+     *    mensaje:
+     *       ERROR: El torneo ha finalizado
+     * 
+     * @return El proximo partido a jugarse si se cumplen las
+     *         condiciones, de lo contrari     *       ERROR: El resultado del partido no ha sido cargado
+o retorna null.
+     */
+    public Partido moverFecha(){
+        if (isFinalizado() == false){
+            System.out.println("ERROR: El resultado del partido no ha sido cargado");
+            return new Partido(null,null);
+        } else if (obtenerProximaFecha() == null){
+            System.out.println("ERROR: El torneo ha finalizado");
+            return new Partido(null,null);
+        } else {
+            return obtenerProximaFecha();
+        }
+            
+    }
+    public Partido obtenerProximaFecha(){
+        return proximaFecha;
+    }
+
+    public boolean isFinalizado(){
+        return !(this.proximaFechaIterator.hasNext());
+    }
+
+    public List<Partido> getPartidos(){
+        return this.encuentros;
+    } 
+
+    /**
+     * Imprime por pantalla los resultados de los encuentros.
+     */
+    public void imprimirEncuentros() {
+
+        System.out.println("-----Torneo-----");
+        for (Partido proximaFecha : encuentros) {
+            System.out.println("\n" + proximaFecha);
+        }
+        System.out.println("----------------");
+    }
+
+    /**
+     * Imprime por pantalla la tabla de posiciones.
+     */
+    
+    public void imprimirTablaPosiciones() {
+        System.out.println("-----Torneo-----");
+        System.out.println(" " + resultados.toString());
+        System.out.println("----------------");
+    }
+
+}
